@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+// @ts-check
+
 const path = require('path');
 // const fs = require('fs');
 const dotenv = require('dotenv');
@@ -41,7 +43,7 @@ const { AuthBot } = require('./authBot');
         const vaultName = process.env.KeyVaultName;
         const keyVaultUrl = `https://${ vaultName }.vault.azure.net`;
 
-        const certificateName = process.env.CertificateName;
+        const certificateName = process.env.CertificateName ?? '';
 
         // Using an Azure credential object and a keyVaultUrl, let's create a SecretClient
         const secretClient = new SecretClient(keyVaultUrl, credential);
@@ -56,7 +58,9 @@ const { AuthBot } = require('./authBot');
         const botFrameworkAuthentication = new ConfigurationBotFrameworkAuthentication({
             MicrosoftAppId: process.env.MicrosoftAppId,
             CertificateThumbprint: process.env.CertificateThumbprint,
-            CertificatePrivateKey: certificateKey
+            CertificatePrivateKey: certificateKey,
+            MicrosoftAppTenantId: process.env.MicrosoftAppTenantId,
+            MicrosoftAppType: process.env.MicrosoftAppType
         });
 
         // ---- Authenticate using local certificate

@@ -1,0 +1,69 @@
+{
+    "name": "core-bot",
+    "version": "1.0.0",
+    "description": "A bot that demonstrates core AI capabilities",
+    "author": "Microsoft Bot Framework Team",
+    "license": "MIT",
+    "main": "index.js",
+    "scripts": {
+        "build": "tsc --build",
+        "lint": "eslint -c .eslintrc.js --ext .ts src",
+        "postinstall": "npm run build && node ./deploymentScripts/webConfigPrep.js",
+        "start": "tsc --build && node ./lib/index.js",
+        "test": "tsc --build && nyc mocha lib/tests/**/*.test.js",
+        "watch": "nodemon --watch ./src -e ts --exec \"npm run start\""
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Microsoft/BotBuilder-Samples.git"
+    },
+    "nyc": {
+        "extension": [
+            ".ts",
+            ".tsx"
+        ],
+        "exclude": [
+            "**/.eslintrc.js",
+            "**/*.d.ts",
+            "**/*.test.*",
+            "**/tests",
+            "**/coverage",
+            "**/deploymentScripts",
+            "**/src/index.ts"
+        ],
+        "reporter": [
+            "text"
+        ],
+        "all": true
+    },
+    "dependencies": {
+        "@microsoft/recognizers-text-data-types-timex-expression": "1.1.4",
+        "botbuilder": "~4.23.0",
+        "botbuilder-ai": "~4.23.0",
+        "botbuilder-dialogs": "~4.23.0",
+        "botbuilder-testing": "~4.23.0",
+        "dotenv": "^8.2.0",
+        "moment": "^2.30.1",
+        "replace": "~1.2.0",
+        "restify": "~10.0.0"
+    },
+    "devDependencies": {
+        "@types/dotenv": "6.1.1",
+        "@types/mocha": "^7.0.2",
+        "@types/node": "^16.11.6",
+        "@types/restify": "8.5.12",
+        "@typescript-eslint/eslint-plugin": "^7.8.0",
+        "@typescript-eslint/parser": "^7.8.0",
+        "eslint": "^8.57.0",
+        "eslint-config-standard": "^14.1.1",
+        "eslint-plugin-import": "^2.20.2",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-promise": "^4.2.1",
+        "eslint-plugin-standard": "^4.0.1",
+        "mocha": "^7.1.2",
+        "nodemon": "~2.0.4",
+        "nyc": "^15.0.1",
+        "ts-node": "^8.10.1",
+        "typescript": "~4.9.3"
+    }
+}

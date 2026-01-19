@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+// @ts-check
+
 const { ChoicePrompt, ComponentDialog, WaterfallDialog } = require('botbuilder-dialogs');
 
 const REVIEW_SELECTION_DIALOG = 'REVIEW_SELECTION_DIALOG';
@@ -73,7 +75,7 @@ class ReviewSelectionDialog extends ComponentDialog {
             return await stepContext.endDialog(list);
         } else {
             // Otherwise, repeat this dialog, passing in the list from this iteration.
-            return await stepContext.replaceDialog(REVIEW_SELECTION_DIALOG, list);
+            return await stepContext.replaceDialog(this.initialDialogId, list);
         }
     }
 }

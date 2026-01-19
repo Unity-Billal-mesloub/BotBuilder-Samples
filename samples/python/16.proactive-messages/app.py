@@ -63,7 +63,7 @@ CONVERSATION_REFERENCES: Dict[str, ConversationReference] = dict()
 # If the channel is the Emulator, and authentication is not in use, the AppId will be null.
 # We generate a random AppId for this case only. This is not required for production, since
 # the AppId will have a value.
-APP_ID = SETTINGS.app_id if SETTINGS.app_id else uuid.uuid4()
+APP_ID = CONFIG.APP_ID if CONFIG.APP_ID else uuid.uuid4()
 
 # Create the Bot
 BOT = ProactiveBot(CONVERSATION_REFERENCES)
@@ -71,19 +71,7 @@ BOT = ProactiveBot(CONVERSATION_REFERENCES)
 
 # Listen for incoming requests on /api/messages.
 async def messages(req: Request) -> Response:
-    # Main bot message handler.
-    if "application/json" in req.headers["Content-Type"]:
-        body = await req.json()
-    else:
-        return Response(status=HTTPStatus.UNSUPPORTED_MEDIA_TYPE)
-
-    activity = Activity().deserialize(body)
-    auth_header = req.headers["Authorization"] if "Authorization" in req.headers else ""
-
-    response = await ADAPTER.process_activity(auth_header, activity, BOT.on_turn)
-    if response:
-        return json_response(data=response.body, status=response.status)
-    return Response(status=HTTPStatus.OK)
+    return await ADAPTER.process(req, BOT)
 
 
 # Listen for requests on /api/notify, and send a messages to all conversation members.
